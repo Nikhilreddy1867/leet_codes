@@ -53,8 +53,8 @@ class Solution {
             ans.add(node);
             for(int i=0;i<adj.get(node).size();i++){
                 in[adj.get(node).get(i)]--;
-                if(in[i]==0){
-                    q.offer(i);
+                if(in[adj.get(node).get(i)]==0){
+                    q.offer(adj.get(node).get(i));
                 }
             }
         }
