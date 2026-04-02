@@ -1,0 +1,89 @@
+class Solution {
+    //code with mik solution
+    void solve(int[] people_skill, int idx, List<Integer> temp, int mask,
+               int target_mask, List<Integer> result, HashMap<String, Integer> dp) {
+        if (idx == people_skill.length) {
+            if (mask == target_mask) {
+                if (result.size() == 0 || result.size() >= temp.size()) {
+                    result.clear();
+                    result.addAll(temp);
+                }
+            }
+            return;
+        }
+        String s = idx + "" + mask;
+        if (dp.containsKey(s)) {
+            if (dp.get(s) <= temp.size())
+                return;
+        }
+        if (result.size() != 0 && temp.size() >= result.size())
+            return;
+
+        solve(people_skill, idx + 1, temp, mask, target_mask, result, dp);
+        if ((mask | people_skill[idx]) != mask) {
+            temp.add(idx);
+            solve(people_skill, idx + 1, temp, mask | people_skill[idx], target_mask, result, dp);
+            temp.remove(temp.size() - 1);
+            dp.put(s, (temp.size() != 0) ? temp.size() : -1);
+        }
+    }
+    //my rec solution far enough for this question
+    //passes 23/38 cases
+    private static void rec(int ind,HashSet<String> hs,HashSet<String> temp,ArrayList<Integer> team,ArrayList<Integer> ans,int n,List<List<String>> people){
+        if (!ans.isEmpty() && team.size()>=ans.size()) return;
+        if(temp.containsAll(hs)){
+            if(ans.isEmpty() || team.size()<ans.size()){
+                ans.clear();
+                ans.addAll(team);
+            }
+            return; 
+        }
+        if(ind==n) return;
+        HashSet<String> curr=new HashSet<>(temp);
+        curr.addAll(people.get(ind));
+        team.add(ind);
+        rec(ind+1,hs,curr,team,ans,n,people);
+        team.remove(team.size()-1);
+        rec(ind+1,hs,temp,team,ans,n,people);
+    }
+    public int[] smallestSufficientTeam(String[] req_skills, List<List<String>> people) {
+        //my solution
+        // int n=people.size();
+        // HashSet<String> hs=new HashSet<>();
+        // for(String s:req_skills){ 
+        //     hs.add(s);
+        // }
+        // HashSet<String> temp=new HashSet<>();
+        // ArrayList<Integer> team=new ArrayList<>();
+        // ArrayList<Integer> ans=new ArrayList<>();
+        // rec(0,hs,temp,team,ans,n,people);
+        // int[] ansf=new int[ans.size()];
+        // for(int i=0;i<ans.size();i++){
+        //     ansf[i]=ans.get(i);
+        // }
+        // return ansf;
+        int n = req_skills.length;
+        int m = people.size();
+        HashMap<String, Integer> skills = new HashMap<>();
+        for (int i = 0; i < n; i++)
+            skills.put(req_skills[i], i);
+        int[] people_skill = new int[m];
+        for (int i = 0; i < m; i++) {
+            int skill_bit = 0;
+            for (String skill : people.get(i)) {
+                skill_bit |= (1 << skills.get(skill));
+            }
+            people_skill[i] = skill_bit;
+        }
+        int target_mask = (int) Math.pow(2, n) - 1;
+        List<Integer> temp = new ArrayList<>();
+        List<Integer> result = new ArrayList<>();
+        HashMap<String, Integer> dp = new HashMap<>();
+        solve(people_skill, 0, temp, 0, target_mask, result, dp);
+        int[] ans = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            ans[i] = result.get(i);
+        }
+        return ans;
+    }
+}
