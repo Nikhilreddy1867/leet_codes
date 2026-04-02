@@ -6,7 +6,7 @@ class Solution {
             if (mask == target_mask) {
                 if (result.size() == 0 || result.size() >= temp.size()) {
                     result.clear();
-                    result.addAll(temp);
+                    result.addAll(temp);56
                 }
             }
             return;
