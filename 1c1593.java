@@ -10,7 +10,7 @@ class Solution {
                 temp.add(s.substring(ind,i+1));
                 rec(i+1,temp,ans,s,hs);
                 hs.remove(s.substring(ind,i+1));
-                temp.remove(temp.size()-1);
+                temp.remove(temp.size() - 1);
             }
         }
     }
