@@ -82,6 +82,7 @@ class trie {
         }
 
         for (String res : output) {
+            
             System.out.println(res);
         }
     }
