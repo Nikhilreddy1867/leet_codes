@@ -71,6 +71,7 @@ class trie {
                 case "insert":
                     trie.insert(arguments[i][0]);
                     output.add("null");
+                    
                     break;
                 case "search":
                     output.add(trie.search(arguments[i][0]) ? "true" : "false");
